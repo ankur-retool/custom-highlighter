@@ -70,7 +70,7 @@ export class Tip extends Component<Props, State> {
               />
               <div>
 
-                {["FFS", "VCD", "DATA", "TERM", "OTHER"].map((_emoji) => (
+                {["VCD", "FFS", "Data", "PI", "Metrics", "Other"].map((_emoji) => (
                   <label style={{ color: "black" }} key={_emoji}>
                     <input
                       //old comment -> ["👍", "👎", "❌", "✅", "⚠️"]
