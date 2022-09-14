@@ -24,6 +24,11 @@ interface State {
   highlights: Array<IHighlight>;
 }
 
+// interface Props {
+//   url: string;
+//   highlights: Array<IHighlight>;
+// }
+
 const getNextId = () => String(Math.random()).slice(2);
 
 const parseIdFromHash = () =>
@@ -43,8 +48,7 @@ const HighlightPopup = ({
       {comment.emoji} {comment.text}
     </div>
   ) : null;
-//change this ->
-// this.props.model.url ||
+
 const PRIMARY_PDF_URL = "https://arxiv.org/pdf/1708.08021.pdf";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 
@@ -52,12 +56,12 @@ const searchParams = new URLSearchParams(document.location.search);
 
 const initialUrl = searchParams.get("url") || PRIMARY_PDF_URL;
 
-class App extends Component<{}, State> {
+class App extends Component<any, State> {
   state = {
     // @ts-ignore
     // Do something similar here with the initial highlights
     url: this.props.model.url || initialUrl,
-    highlights: []
+    highlights: this.props.model.highlights || [],
     //highlights: testHighlights[initialUrl]
     //  ? [...testHighlights[initialUrl]]
     //  : [],
