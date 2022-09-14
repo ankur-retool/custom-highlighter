@@ -74,6 +74,7 @@ export class PdfLoader extends Component<Props, State> {
       .then(() => discardedDocument && discardedDocument.destroy())
       .then(() => {
         if (!url) {
+          // @ts-ignore
           return;
         }
 
@@ -98,8 +99,8 @@ export class PdfLoader extends Component<Props, State> {
         {error
           ? this.renderError()
           : !pdfDocument || !children
-          ? beforeLoad
-          : children(pdfDocument)}
+            ? beforeLoad
+            : children(pdfDocument)}
       </>
     );
   }

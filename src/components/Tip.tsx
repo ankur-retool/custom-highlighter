@@ -69,9 +69,11 @@ export class Tip extends Component<Props, State> {
                 }}
               />
               <div>
-                {["💩", "😱", "😍", "🔥", "😳", "⚠️"].map((_emoji) => (
-                  <label key={_emoji}>
+
+                {["FFS", "VCD", "DATA", "TERM", "OTHER"].map((_emoji) => (
+                  <label style={{ color: "black" }} key={_emoji}>
                     <input
+                      //old comment -> ["👍", "👎", "❌", "✅", "⚠️"]
                       checked={emoji === _emoji}
                       type="radio"
                       name="emoji"

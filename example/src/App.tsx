@@ -43,7 +43,8 @@ const HighlightPopup = ({
       {comment.emoji} {comment.text}
     </div>
   ) : null;
-
+//change this ->
+// this.props.model.url ||
 const PRIMARY_PDF_URL = "https://arxiv.org/pdf/1708.08021.pdf";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 
@@ -53,10 +54,13 @@ const initialUrl = searchParams.get("url") || PRIMARY_PDF_URL;
 
 class App extends Component<{}, State> {
   state = {
-    url: initialUrl,
-    highlights: testHighlights[initialUrl]
-      ? [...testHighlights[initialUrl]]
-      : [],
+    // @ts-ignore
+    // Do something similar here with the initial highlights
+    url: this.props.model.url || initialUrl,
+    highlights: []
+    //highlights: testHighlights[initialUrl]
+    //  ? [...testHighlights[initialUrl]]
+    //  : [],
   };
 
   resetHighlights = () => {
@@ -75,7 +79,7 @@ class App extends Component<{}, State> {
     });
   };
 
-  scrollViewerTo = (highlight: any) => {};
+  scrollViewerTo = (highlight: any) => { };
 
   scrollToHighlightFromHash = () => {
     const highlight = this.getHighlightById(parseIdFromHash());
@@ -104,6 +108,13 @@ class App extends Component<{}, State> {
 
     console.log("Saving highlight", highlight);
 
+    var updater = {
+      highlights: [{ ...highlight, id: getNextId() }, ...highlights],
+    }
+    // @ts-ignore
+    this.props.modelUpdate(updater)
+
+
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
     });
@@ -111,6 +122,28 @@ class App extends Component<{}, State> {
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
     console.log("Updating highlight", highlightId, position, content);
+    // ->
+    var updater = {
+      highlights: this.state.highlights.map((h) => {
+        const {
+          id,
+          position: originalPosition,
+          content: originalContent,
+          ...rest
+        } = h;
+        return id === highlightId
+          ? {
+            id,
+            position: { ...originalPosition, ...position },
+            content: { ...originalContent, ...content },
+            ...rest,
+          }
+          : h;
+      }),
+    }
+    // @ts-ignore
+    this.props.modelUpdate(updater)
+
 
     this.setState({
       highlights: this.state.highlights.map((h) => {
@@ -122,14 +155,15 @@ class App extends Component<{}, State> {
         } = h;
         return id === highlightId
           ? {
-              id,
-              position: { ...originalPosition, ...position },
-              content: { ...originalContent, ...content },
-              ...rest,
-            }
+            id,
+            position: { ...originalPosition, ...position },
+            content: { ...originalContent, ...content },
+            ...rest,
+          }
           : h;
       }),
     });
+
   }
 
   render() {
